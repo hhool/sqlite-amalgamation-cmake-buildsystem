@@ -591,6 +591,9 @@ zSkipValidUtf8(const char *z, int nAccept, long ccm);
 #   include <windows.h>
 #  endif
 #  define CIO_WIN_WC_XLATE 1 /* Use WCHAR Windows APIs for console I/O */
+#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#endif
 # else
 #  ifndef SHELL_NO_SYSINC
 #   include <unistd.h>
