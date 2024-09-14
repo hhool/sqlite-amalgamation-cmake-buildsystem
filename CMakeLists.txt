@@ -193,7 +193,10 @@ if(UNIX)
     endif()
 endif()
 
+option(BUILD_SHELL "Build the SQLite3 interactive shell." OFF)
+if (BUILD_SHELL)
 find_package(ZLIB)
+endif()
 
 # -- Library -------------------------------------------------------------------
 
@@ -315,7 +318,9 @@ if(SQLITE_ENABLE_ICU)
 endif()
 
 # -- Interactive shell ---------------------------------------------------------
+option(BUILD_SHELL "Build the SQLite3 interactive shell." OFF)
 
+if(BUILD_SHELL)
 add_executable(Shell)
 add_executable(SQLite::Shell ALIAS Shell)
 
@@ -338,6 +343,7 @@ if(TARGET ZLIB::ZLIB)
     target_compile_definitions(Shell PRIVATE SQLITE_HAVE_ZLIB)
     target_link_libraries(Shell PRIVATE ZLIB::ZLIB)
 endif()
+endif()
 
 # -- Testing -------------------------------------------------------------------
 
@@ -355,8 +361,13 @@ endif()
 
 include(GNUInstallDirs)
 
+if (BUILD_SHELL)
 install(TARGETS SQLite3 Shell
     EXPORT SQLite3Targets)
+else()
+install(TARGETS SQLite3
+    EXPORT SQLite3Targets)
+endif()
 
 install(FILES source/sqlite3.h
               source/sqlite3ext.h
